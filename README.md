@@ -107,6 +107,11 @@ Nếu làm project AI/Data Analytics thực tế:
 
 ## 6. Kết luận
 
-Visualization tools không nên được đánh giá chỉ bằng hình ảnh cuối cùng, đặc biệt với dataset nhỏ. Khi dữ liệu đơn giản, chart giữa các tool có thể nhìn giống nhau vì chúng đang biểu diễn cùng một phép tổng hợp. Giá trị thật sự của tool nằm ở khả năng mở rộng, mức độ tương tác, khả năng tích hợp web, dashboard support và mức phù hợp với workflow thực tế.
 
 Với project này, lựa chọn thực tế nhất là: Matplotlib cho báo cáo tĩnh, Plotly cho interactive chart, Streamlit cho demo nhanh, Dash cho dashboard chuyên nghiệp và Mermaid cho tài liệu kỹ thuật.
+
+- Matplotlib: đẹp theo kiểu “academic”, rõ ràng, tối giản, phù hợp báo cáo PDF.
+- Plotly: đẹp theo kiểu “modern web”, có hiệu ứng hover, nhìn trực quan hơn khi tương tác.
+- Streamlit: không phải chart đẹp nhất, nhưng tổng thể UI dashboard nhìn “app-like” và chuyên nghiệp.
+- Dash: đẹp nhất nếu được custom CSS tốt, nhưng mặc định khá basic.
+- Mermaid: đẹp theo hướng sơ đồ kỹ thuật, không phù hợp cho data chart.
