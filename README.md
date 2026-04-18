@@ -116,109 +116,47 @@ Với project này, lựa chọn thực tế nhất là: Matplotlib cho báo cá
 - Dash: đẹp nhất nếu được custom CSS tốt, nhưng mặc định khá basic.
 - Mermaid: đẹp theo hướng sơ đồ kỹ thuật, không phù hợp cho data chart.
 
-## 7. Tools tìm hiểu thêm: Power BI vs Tableau
+## 7. Tools tìm hiểu thêm: Power BI
 
-Phần này dùng cùng dataset `data/ecommerce_events_clean.csv` để tạo dashboard trên các BI tool phổ biến. Mục tiêu là so sánh theo khả năng business dashboard, không so sánh theo code.
+Power BI là một BI tool phù hợp để tạo dashboard business từ file CSV mà không cần viết code. Với dataset e-commerce, Power BI cho phép import dữ liệu nhanh, tạo chart bằng kéo-thả, thêm slicer/filter và trình bày dashboard theo kiểu báo cáo nội bộ.
 
-### 7.1 Power BI
+### 7.1 Event Type Distribution
 
-**Setup**
+![Power BI event distribution](screenshots/powerBI/events_distribution.png)
 
-- Cài Power BI Desktop.
-- Mở Power BI Desktop → `Get data` → `Text/CSV`.
-- Chọn file `data/ecommerce_events_clean.csv`.
-- Trong Power Query, kiểm tra kiểu dữ liệu:
-  - `event_time`: Date/Time
-  - `price`: Decimal number
-  - `event_type`, `brand`, `category_code`: Text
-  - `product_id`, `user_id`: Whole number hoặc Text nếu chỉ dùng làm ID
-- Tạo thêm cột `category_root` bằng cách split `category_code` theo dấu `.` và lấy phần đầu.
+Biểu đồ event distribution cho thấy phần lớn dữ liệu là `view`, trong khi `cart` rất ít. Với dataset nhỏ và mất cân bằng như vậy, Power BI hiển thị kết quả rõ ràng nhưng chưa tạo ra insight quá sâu. Giá trị chính của Power BI ở đây là khả năng biến kết quả đếm đơn giản thành dashboard có thể filter và trình bày nhanh.
 
-**Chart nên tạo**
+### 7.2 Price Distribution
 
-- Event type distribution: Clustered column chart, Axis = `event_type`, Values = Count of rows.
-- Price distribution: Histogram bằng bin của `price`, hoặc column chart theo price range.
-- Brand count: Bar chart, Axis = `brand`, Values = Count of rows.
-- Events over time: Line chart, Axis = `event_time`, Values = Count of rows.
-- Category distribution: Bar chart, Axis = `category_root`, Values = Count of rows.
+![Power BI price distribution](screenshots/powerBI/price_distribution.png)
 
-**Dashboard + slicer**
+Price distribution giúp quan sát mức giá sản phẩm theo các khoảng. Power BI phù hợp cho dạng biểu đồ này vì có thể tạo bin/range, format trục và kết hợp với slicer để xem phân bố giá theo brand hoặc category.
 
-- Thêm slicer cho `event_type`.
-- Thêm slicer cho `brand` hoặc `category_root`.
-- Thêm card: Total events, Average price, Unique users.
-- Layout gợi ý: KPI cards ở hàng đầu, chart chính ở giữa, slicer bên trái hoặc phía trên.
+### 7.3 Brand Distribution
 
-**Nhận xét nhanh**
+![Power BI brand distribution](screenshots/powerBI/brand_distribution.png)
 
-Power BI phù hợp business dashboard, báo cáo nội bộ và môi trường Microsoft. Điểm mạnh là data model, Power Query, slicer, DAX và publish lên Power BI Service. Điểm yếu là cần làm quen với DAX/data model nếu dashboard phức tạp.
+Brand distribution cho thấy số lượng event theo từng thương hiệu. Với nhiều brand nhỏ, Power BI nên được dùng kèm sort descending, filter Top N hoặc grouping để dashboard dễ đọc hơn.
 
-### 7.2 Tableau
+### 7.4 Category Distribution + Slicer
 
-**Setup**
+![Power BI category slicer](screenshots/powerBI/slicer_category_distibution.png)
 
-- Cài Tableau Public hoặc Tableau Desktop.
-- Mở Tableau → `Connect` → `Text file`.
-- Chọn file `data/ecommerce_events_clean.csv`.
-- Kiểm tra kiểu dữ liệu:
-  - `event_time`: Date & Time
-  - `price`: Number decimal
-  - `event_type`, `brand`, `category_code`: String
-- Tạo calculated field `category_root`:
+Dashboard có slicer giúp người xem lọc dữ liệu theo category hoặc event type. Đây là điểm mạnh thực tế của Power BI so với ảnh tĩnh: người dùng business có thể tự tương tác với dữ liệu mà không cần sửa code.
 
-```text
-SPLIT([category_code], ".", 1)
-```
+### 7.5 Nhận xét Power BI
 
-**Chart nên tạo**
+| Tiêu chí | Nhận xét |
+|---|---|
+| Ease of use | Dễ dùng nếu đã quen Excel; thao tác kéo-thả nhanh |
+| Visualization quality | Đẹp theo hướng business dashboard, rõ ràng và dễ đọc |
+| Interactivity | Mạnh nhờ slicer, filter, cross-filter và drill-down |
+| Dashboard capability | Rất tốt cho dashboard KPI, báo cáo nội bộ và business analytics |
+| Learning curve | Cơ bản dễ học; nâng cao cần biết Power Query, DAX và data model |
+| Use case | Phù hợp nhất cho business dashboard và báo cáo doanh nghiệp |
 
-- Event type distribution: Columns = `event_type`, Rows = COUNT records.
-- Price distribution: dùng `price` bins, Rows = COUNT records.
-- Brand count: Rows = `brand`, Columns = COUNT records, sort descending.
-- Events over time: Columns = `event_time`, Rows = COUNT records, chọn line chart.
-- Category distribution: Rows = `category_root`, Columns = COUNT records.
+### 7.6 Kết luận
 
-**Dashboard**
+Power BI phù hợp nhất khi mục tiêu là làm dashboard cho business user: dễ import CSV, dễ tạo chart, dễ thêm slicer và dễ trình bày báo cáo. Với dataset nhỏ, biểu đồ có thể giống các tool khác ở phần hình ảnh, nhưng Power BI nổi bật ở khả năng tương tác, filter và tổ chức dashboard theo ngữ cảnh doanh nghiệp.
 
-- Tạo từng worksheet cho mỗi chart.
-- Tạo Dashboard mới và kéo các worksheet vào.
-- Thêm filter cho `event_type`, `brand`, `category_root`.
-- Bật `Use as Filter` cho chart chính nếu muốn click vào chart để lọc dashboard.
-
-**Nhận xét nhanh**
-
-Tableau phù hợp data exploration và tạo dashboard trực quan nhanh. Điểm mạnh là kéo-thả linh hoạt, visual đẹp, interaction tự nhiên. Điểm yếu là data modeling và transformation không tiện bằng Power Query trong Power BI.
-
-### 7.3 Bảng so sánh
-
-| Tiêu chí | Power BI | Tableau |
-|---|---|---|
-| Ease of use | Dễ nếu quen Excel/Microsoft | Dễ kéo-thả, trực quan hơn khi explore |
-| Visualization quality | Tốt, business-oriented | Rất tốt, visual polished hơn mặc định |
-| Dashboard capability | Rất mạnh cho báo cáo doanh nghiệp | Rất mạnh cho dashboard phân tích trực quan |
-| Interactivity | Slicer, drill-down, cross-filter tốt | Filter, highlight, click-to-filter rất mượt |
-| Learning curve | Cần học Power Query, DAX, data model | Cần học shelf, calculated field, dashboard action |
-| Use case | Business reporting, KPI dashboard, Microsoft ecosystem | Data exploration, presentation, visual analytics |
-
-### 7.4 Kết luận
-
-- Beginner: Tableau dễ làm quen hơn nếu chỉ kéo-thả và khám phá dữ liệu.
-- Business dashboard: Power BI phù hợp hơn vì mạnh về data model, DAX, Power Query và hệ sinh thái Microsoft.
-- Data exploration: Tableau phù hợp hơn vì thao tác trực quan, kéo-thả nhanh và visual đẹp mặc định.
-- Nếu làm báo cáo nội bộ công ty: ưu tiên Power BI.
-- Nếu cần trình bày phân tích đẹp, nhanh, dễ demo: ưu tiên Tableau.
-
-### 7.5 Gợi ý chụp ảnh dashboard đẹp
-
-- Dùng layout 16:9, nền trắng hoặc xám rất nhạt.
-- Hàng đầu đặt 3-4 KPI cards: Total events, Average price, Unique users, Total brands.
-- Bên trái đặt slicer/filter: event type, brand, category.
-- Ở giữa đặt chart quan trọng nhất: Events over time hoặc Event type distribution.
-- Bên phải hoặc hàng dưới đặt Brand count và Category distribution.
-- Tránh dùng quá nhiều màu; chỉ dùng 1 màu chính và 1 màu nhấn.
-- Trước khi chụp, sort bar chart giảm dần và ẩn category/brand quá nhỏ nếu bị rối.
-
-Ảnh nộp nên lưu tại:
-
-- `screenshots/manual/powerbi_dashboard.png`
-- `screenshots/manual/tableau_dashboard.png`
+Điểm cần lưu ý: nếu dữ liệu lớn hơn hoặc cần metric phức tạp, nên học thêm Power Query để clean data và DAX để tạo measure như `Total Events`, `Average Price`, `Unique Users`.
